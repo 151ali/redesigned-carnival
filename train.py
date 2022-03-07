@@ -30,7 +30,7 @@ random.seed(seed)
 
 # set the device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#print(device)
+print(f" running on: {device}")
 
 
 # parameters
