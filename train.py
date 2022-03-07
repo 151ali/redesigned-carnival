@@ -123,11 +123,15 @@ for epoch in range(num_epochs):
         # forward
         scores = model(data)
         _, predictions = scores.max(1)
-        num_correct += (predictions == targets).sum()
 
 
         print(predictions.get_device())
         print(targets.get_device())
+
+        num_correct += (predictions == targets).sum()
+
+
+        
 
         num_samples += predictions.size(0)
 
