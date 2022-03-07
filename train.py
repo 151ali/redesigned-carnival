@@ -123,11 +123,16 @@ for epoch in range(num_epochs):
         # forward
         scores = model(data)
         _, predictions = scores.max(1)
-        #num_correct += (predictions == targets).sum()
+        num_correct += (predictions == targets).sum()
+
+
+        print(predictions.get_device())
+        print(targets.get_device())
+
         num_samples += predictions.size(0)
 
         running_acc = num_correct / num_samples
-        wandb.log({"train_accuracy": running_acc.item()})
+        wandb.log({"train_accuracy": running_acc})
 
         loss = criterion(scores, targets)
         wandb.log({"train_loss": loss.item()})
