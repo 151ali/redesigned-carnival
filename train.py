@@ -147,7 +147,7 @@ for epoch in range(num_epochs):
     with torch.no_grad():
         for x, y in test_loader:
             x = x.to(device=device).squeeze(1)
-            y = y.to(device=device)
+            y = y.to(device=device).type(torch.LongTensor)
 
             scores = model(x)
             _, predictions = scores.max(1)
