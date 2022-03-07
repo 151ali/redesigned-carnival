@@ -103,15 +103,16 @@ test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 #  In that case, just pass the class index targets into the loss function
 #  and PyTorch will take care of the rest.
 
+experiment = f"experiment_depth_{depth}"
 
-wandb.init(project="master-thesis-2022", entity="151ali")
-wandb.config = {
-  "learning_rate": learning_rate,
-  "epochs": num_epochs,
-  "batch_size": batch_size
-}
+wandb.init(
+    project  = "master-thesis-2022",
+    entity   = "151ali",
+    group    = experiment,
+    job_type = "eval"
+)
 
-
+wandb.config.update(args)
 # TRAIN
 
 
