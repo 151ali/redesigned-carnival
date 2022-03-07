@@ -118,21 +118,16 @@ for epoch in range(num_epochs):
     for batch_idx, (data, targets) in enumerate(tqdm(train_loader)):
         # Get data to cuda if possible
         data = data.to(device=device).squeeze(1)
-        targets = targets.to(device=device).type(torch.LongTensor) #  PyTorch won't accept a `FloatTensor` as categorical target
+        targets = targets.type(torch.LongTensor).to(device=device) #  PyTorch won't accept a `FloatTensor` as categorical target
 
         # forward
         scores = model(data)
         _, predictions = scores.max(1)
 
-
-        print(predictions.get_device())
-        print(targets.get_device())
+        #print(predictions.get_device())
+        #print(targets.get_device())
 
         num_correct += (predictions == targets).sum()
-
-
-        
-
         num_samples += predictions.size(0)
 
         running_acc = num_correct / num_samples
@@ -157,7 +152,7 @@ for epoch in range(num_epochs):
     with torch.no_grad():
         for x, y in test_loader:
             x = x.to(device=device).squeeze(1)
-            y = y.to(device=device).type(torch.LongTensor)
+            y = y.type(torch.LongTensor).to(device=device)
 
             scores = model(x)
             _, predictions = scores.max(1)
