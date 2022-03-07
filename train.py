@@ -43,7 +43,7 @@ model_name     = args.model
 learning_rate  = args.lr
 batch_size     = args.batch
 num_epochs     = args.epoch
-depth          = args.epoch
+depth          = args.deph
 
 
 in_features   = 26
