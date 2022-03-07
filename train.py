@@ -52,7 +52,8 @@ model = generate_model(
     model_name,
     num_poses     =  num_poses,
     in_features   = in_features, 
-    num_classes   = num_classes
+    num_classes   = num_classes,
+    device = device
 )
 model.to(device)
 # get_num_params(model)
