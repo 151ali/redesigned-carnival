@@ -161,7 +161,7 @@ for epoch in range(num_epochs):
         
         val_acc = vnum_correct / vnum_samples
 
-    wandb.log({"val_loss": val_acc.item()})
+    wandb.log({"val_acc": val_acc.item()})
 
 
 # print(f"Accuracy on test set: {check_accuracy(test_loader, model, device)*100:.2f}")
