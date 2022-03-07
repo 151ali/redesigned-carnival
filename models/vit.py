@@ -15,7 +15,8 @@ class PoseEmbedding(nn.Module):
     def __init__(self,
         num_patches: int = 30, 
         in_features: int = 26, 
-        emb_size   : int = 768
+        emb_size   : int = 768,
+        device="cpu"
     ):
         
         super(PoseEmbedding, self).__init__()
@@ -31,10 +32,10 @@ class PoseEmbedding(nn.Module):
 
              
     def forward(self, x: Tensor) -> Tensor:
-
+        x = x.to(device)
         batch_size, _, _ = x.shape    
         x = self.projection(x)
-        cls_tokens = repeat(self.cls_token, '() n e -> b n e', b=batch_size)
+        cls_tokens = repeat(self.cls_token, '() n e -> b n e', b=batch_size).to(device)
         # prepend the cls token to the input
         x = torch.cat([cls_tokens, x], dim=1)
         x += self.positions
@@ -53,6 +54,7 @@ class MultiHeadAttention(nn.Module):
         self.projection = nn.Linear(emb_size, emb_size)
         
     def forward(self, x : Tensor, mask: Tensor = None) -> Tensor:
+        x = x.to(device)
         # split keys, queries and values in num_heads
         qkv = rearrange(self.qkv(x), "b n (h d qkv) -> (qkv) b h n d", h=self.num_heads, qkv=3)
         queries, keys, values = qkv[0], qkv[1], qkv[2]
@@ -142,9 +144,10 @@ class ViT(nn.Sequential):
                 emb_size: int = 768,
                 depth: int = 12,
                 num_classes: int = 20,
+                device="cpu",
                 **kwargs):
         super().__init__(
-            PoseEmbedding(num_poses, in_features, emb_size),
+            PoseEmbedding(num_poses, in_features, emb_size,device),
             TransformerEncoder(depth, emb_size=emb_size, **kwargs),
             ClassificationHead(emb_size, num_classes)
         )
