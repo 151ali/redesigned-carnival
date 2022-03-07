@@ -20,7 +20,7 @@ par.add_argument('--model', type=str, default='lstm', help='Train LSTM model.')
 par.add_argument('--lr', type=float, default=0.005, help='Learning rate.')
 par.add_argument('--epoch', type=int, default=150, help='Number of epochs')
 par.add_argument('--batch', type=int, default=8, help='Batch size.')
-par.add_argument('--depth', type=int, default=1, help='Batch size.')
+par.add_argument('--depth', type=int, default=1, help='Depth of the architectre.')
 
 
 # for deterministic behavior ( REPRODUCIBILITY )
