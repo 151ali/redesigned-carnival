@@ -150,9 +150,9 @@ class ViT(nn.Sequential):
                 device="cpu",
                 **kwargs):
         super().__init__(
-            PoseEmbedding(num_poses, in_features, emb_size,device),
-            TransformerEncoder(depth, emb_size=emb_size,device = device, **kwargs),
-            ClassificationHead(emb_size, num_classes)
+            PoseEmbedding(num_poses, in_features, emb_size, device),
+            #TransformerEncoder(depth, emb_size=emb_size,device = device, **kwargs),
+            #ClassificationHead(emb_size, num_classes)
         )
 
 
