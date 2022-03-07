@@ -21,7 +21,7 @@ class PoseEmbedding(nn.Module):
         
         super(PoseEmbedding, self).__init__()
         self.in_features = in_features
-        
+        self.device = device
         self.projection = nn.Sequential(
             nn.Linear(in_features, emb_size)
         )
@@ -32,10 +32,10 @@ class PoseEmbedding(nn.Module):
 
              
     def forward(self, x: Tensor) -> Tensor:
-        x = x.to(device)
+        x = x.to(self.device)
         batch_size, _, _ = x.shape    
         x = self.projection(x)
-        cls_tokens = repeat(self.cls_token, '() n e -> b n e', b=batch_size).to(device)
+        cls_tokens = repeat(self.cls_token, '() n e -> b n e', b=batch_size).to(self.device) # TODO
         # prepend the cls token to the input
         x = torch.cat([cls_tokens, x], dim=1)
         x += self.positions
@@ -44,17 +44,19 @@ class PoseEmbedding(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, emb_size: int = 768, num_heads: int = 8, dropout: float = 0):
+    def __init__(self, emb_size: int = 768, num_heads: int = 8, dropout: float = 0, device="cpu"):
         super().__init__()
         self.emb_size = emb_size
         self.num_heads = num_heads
+        self.device = device
+
         # fuse the queries, keys and values in one matrix
         self.qkv = nn.Linear(emb_size, emb_size * 3)
         self.att_drop = nn.Dropout(dropout)
         self.projection = nn.Linear(emb_size, emb_size)
         
     def forward(self, x : Tensor, mask: Tensor = None) -> Tensor:
-        x = x.to(device)
+        x = x.to(self.device)
         # split keys, queries and values in num_heads
         qkv = rearrange(self.qkv(x), "b n (h d qkv) -> (qkv) b h n d", h=self.num_heads, qkv=3)
         queries, keys, values = qkv[0], qkv[1], qkv[2]
@@ -103,11 +105,12 @@ class TransformerEncoderBlock(nn.Sequential):
                  drop_p: float = 0.,
                  forward_expansion: int = 4,
                  forward_drop_p: float = 0.,
+                 device = "cpu",
                  ** kwargs):
         super().__init__(
             ResidualAdd(nn.Sequential(
                 nn.LayerNorm(emb_size),
-                MultiHeadAttention(emb_size, **kwargs),
+                MultiHeadAttention(emb_size, device=device,**kwargs),
                 nn.Dropout(drop_p)
             )),
             ResidualAdd(nn.Sequential(
@@ -121,7 +124,7 @@ class TransformerEncoderBlock(nn.Sequential):
 
 
 class TransformerEncoder(nn.Sequential):
-    def __init__(self, depth: int = 12, **kwargs):
+    def __init__(self, depth: int = 12, device = "cpu",**kwargs):
         super().__init__(
             *[TransformerEncoderBlock(**kwargs) for _ in range(depth)]
         )
@@ -147,8 +150,8 @@ class ViT(nn.Sequential):
                 device="cpu",
                 **kwargs):
         super().__init__(
-            PoseEmbedding(num_poses, in_features, emb_size,device),
-            TransformerEncoder(depth, emb_size=emb_size, **kwargs),
+            PoseEmbedding(num_poses, in_features, emb_size,device, device = device),
+            TransformerEncoder(depth, emb_size=emb_size,device = device **kwargs),
             ClassificationHead(emb_size, num_classes)
         )
 
