@@ -1,0 +1,8 @@
+pytorch
+torchvision
+mpose
+einops
+torchsummary
+onnx
+onnxruntime
+wandb
