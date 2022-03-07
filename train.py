@@ -122,11 +122,8 @@ for epoch in range(num_epochs):
 
         # forward
         scores = model(data)
-        print("------")
-        print(scores.get_device())
-        print("------")
         _, predictions = scores.max(1)
-        num_correct += (predictions == targets).sum()
+        #num_correct += (predictions == targets).sum()
         num_samples += predictions.size(0)
 
         running_acc = num_correct / num_samples
