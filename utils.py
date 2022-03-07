@@ -6,27 +6,27 @@ from  models.mlp import *
 from  models.vit import *
 
 
-def generate_model(name, **kwargs):
+def generate_model(name, depth, **kwargs):
     if name =="lstm":
     
         model = LSTM(
             **kwargs,
 
             hidden_size   = hidden_size,
-            num_layers    = num_layers,
+            num_layers    = depth,
             bidirectional = False,
         )
     elif name =="vit":
         model = ViT(
             **kwargs,
             emb_size      = 768,
-            depth         = 1,
+            depth         = depth,
             
         )
     elif name =="mlp":
         model = MLP(
             **kwargs,
-            hidden_features = 768,
+            hidden_features = depth,
         )
     else:
         return None

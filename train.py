@@ -20,6 +20,7 @@ par.add_argument('--model', type=str, default='lstm', help='Train LSTM model.')
 par.add_argument('--lr', type=float, default=0.005, help='Learning rate.')
 par.add_argument('--epoch', type=int, default=150, help='Number of epochs')
 par.add_argument('--batch', type=int, default=8, help='Batch size.')
+par.add_argument('--deph', type=int, default=1, help='Batch size.')
 
 
 # for deterministic behavior ( REPRODUCIBILITY )
@@ -42,6 +43,7 @@ model_name     = args.model
 learning_rate  = args.lr
 batch_size     = args.batch
 num_epochs     = args.epoch
+depth          = args.epoch
 
 
 in_features   = 26
@@ -53,6 +55,7 @@ num_classes   = 20
 # model
 model = generate_model(
     model_name,
+    depth,
     num_poses     =  num_poses,
     in_features   = in_features, 
     num_classes   = num_classes,
