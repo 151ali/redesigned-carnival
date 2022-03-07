@@ -17,6 +17,9 @@ from torchsummary import summary
 
 par = argparse.ArgumentParser(description='Training.')
 par.add_argument('--model', type=str, default='lstm', help='Train LSTM model.')
+par.add_argument('--lr', type=float, default=0.005, help='Learning rate.')
+par.add_argument('--epoch', type=int, default=150, help='Number of epochs')
+par.add_argument('--batch', type=int, default=8, help='Batch size.')
 
 
 # for deterministic behavior ( REPRODUCIBILITY )
@@ -34,20 +37,20 @@ print(f" running on: {device}")
 
 
 # parameters
+args = par.parse_args()
+model_name     = args.model
+learning_rate  = args.lr
+batch_size     = args.batch
+num_epochs     = args.epoch
+
 
 in_features   = 26
 num_poses     = 30
 num_classes   = 20
 
-learning_rate = 0.005
-batch_size    = 8 #
-num_epochs    = 50
 
 
 # model
-args = par.parse_args()
-model_name = args.model
-
 model = generate_model(
     model_name,
     num_poses     =  num_poses,
