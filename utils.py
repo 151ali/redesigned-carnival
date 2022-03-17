@@ -77,3 +77,11 @@ def get_num_params(net):
         #print("Layer",i,"->\t",end="")
         #print("Weights:", params[j-2][0],"x",params[j-2][1],"\tBias: ",params[j-1][0], "\tParameters: ", param)
     print("\nTotal Params: ", total_params)
+
+
+def save_checkpoint(model, out_path):
+    torch.save(model.state_dict(), out_path)
+
+
+def load_checkpoint(model, chekpoint_path):
+    return model.load_state_dict(torch.load(chekpoint_path))
