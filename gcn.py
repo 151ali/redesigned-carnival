@@ -20,7 +20,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"running on: {device}")
 
 # Hyperparameters
-learning_rate  = 0.01
+learning_rate  = 0.1
 batch_size     = 4
 num_epochs     = 70
 
@@ -66,9 +66,8 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Define Scheduler
-scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer, factor=0.1, patience=5, verbose=True
-)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+    optimizer, 'max')
 
 experiment = f"gnn-based"
 
@@ -119,7 +118,7 @@ for epoch in range(num_epochs):
 
     mean_loss = sum(losses) / len(losses)
     scheduler.step(mean_loss)
-    
+
     # evaluation per epoth
     model.eval()
     vnum_correct = 0
