@@ -62,8 +62,12 @@ model = nn.Sequential(Wrapper(num_kpoint=13),GNN).to(device)
 seed_all()
 
 # Loss and optimizer
+# TODO : argparse it later
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+# optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, nesterov = True)# for ACGN
+
+
 
 # Define Scheduler
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(
