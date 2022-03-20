@@ -120,8 +120,8 @@ for epoch in range(num_epochs):
         # gradient descent update step/adam step
         optimizer.step()
 
-    mean_loss = sum(losses) / len(losses)
-    scheduler.step(mean_loss)
+    #mean_loss = sum(losses) / len(losses)
+    #scheduler.step(mean_loss)
 
     # evaluation per epoth
     model.eval()
