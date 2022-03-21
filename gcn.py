@@ -19,6 +19,9 @@ from models.msg3d.msg3d import MSG3D
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"running on: {device}")
 
+
+checkpoints_root = "./checkpoints"
+
 # Hyperparameters
 learning_rate  = 0.1
 batch_size     = 4
@@ -141,7 +144,7 @@ for epoch in range(num_epochs):
         val_acc = vnum_correct / vnum_samples
 
     wandb.log({"val_acc": val_acc.item()})
-    save_checkpoint(model, f"checkpoints/{val_acc}_atE_{epoch}")
+    save_checkpoint(model, f"{checkpoints_root}/{val_acc}_atE_{epoch}.pt")
 
 
 # print(f"Accuracy on test set: {check_accuracy(test_loader, model, device)*100:.2f}")
