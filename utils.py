@@ -57,10 +57,6 @@ def check_accuracy(loader, model, device):
             x = x.to(device=device).squeeze(1)
             y = y.to(device=device)
 
-            print(x)
-            print(y)
-            exit(0)
-
             scores = model(x)
             _, predictions = scores.max(1)
             num_correct += (predictions == y).sum()

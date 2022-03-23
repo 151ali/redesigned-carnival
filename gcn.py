@@ -146,5 +146,4 @@ for epoch in range(num_epochs):
     wandb.log({"val_acc": val_acc.item()})
     save_checkpoint(model, f"{checkpoints_root}/{val_acc}_atE_{epoch}.pt")
 
-
 # print(f"Accuracy on test set: {check_accuracy(test_loader, model, device)*100:.2f}")

@@ -13,7 +13,7 @@ import random
 import argparse
 
 
-from torchsummary import summary
+# from torchsummary import summary
 
 par = argparse.ArgumentParser(description='Training.')
 par.add_argument('--model', type=str, default='lstm', help='Train LSTM model.')
@@ -61,13 +61,25 @@ model = generate_model(
     num_classes   = num_classes,
     device = device
 )
-model.to(device)
+# model.to(device)
 # get_num_params(model)
 # print(model)
 
+# Distributed GPU training if CUDA can detect more than 1 GPU
+if torch.cuda.device_count() > 1:
+    print(f"Using {torch.cuda.device_count()} GPUs")
+    model = nn.DataParallel(model, device_ids=cuda_devices)
 
-# Loss and optimizer
+print("Total Parameters:", sum([p.nelement() for p in model.parameters()]))
+
+exit(0)
+# Loss 
+# Using Croos EntropyLoss for classification
 criterion = nn.CrossEntropyLoss()
+# Using Negative Log Likelihood Loss function for predicting the masked_token
+# criterion = nn.NLLLoss(ignore_index=0)
+
+# optimizer
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 
