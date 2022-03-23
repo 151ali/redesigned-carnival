@@ -74,7 +74,7 @@ if torch.cuda.device_count() > 1:
 
 print("Total Parameters:", sum([p.nelement() for p in model.parameters()]))
 
-exit(0)
+
 # Loss 
 # Using Croos EntropyLoss for classification
 criterion = nn.CrossEntropyLoss()
