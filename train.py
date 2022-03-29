@@ -66,15 +66,13 @@ model = generate_model(
 # print(model)
 
 # Distributed GPU training if CUDA can detect more than 1 GPU
-# Distributed GPU training if CUDA can detect more than 1 GPU
 if torch.cuda.device_count() > 1:
-    devices_count = torch.cuda.device_count()
-    print(f"Using {devices_count} GPUs")
-    model = nn.DataParallel(model, device_ids=[i for i in range(devices_count)])
+    print(f"Using {torch.cuda.device_count()} GPUs")
+    model = nn.DataParallel(model, device_ids=cuda_devices)
 
 print("Total Parameters:", sum([p.nelement() for p in model.parameters()]))
 
-exit(0)
+
 # Loss 
 # Using Croos EntropyLoss for classification
 criterion = nn.CrossEntropyLoss()
