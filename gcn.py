@@ -32,26 +32,6 @@ print(f"running on: {device}")
 checkpoints_root = "./checkpoints"
 
 
-# Load Data
-X_train = np.load('data/X_train.npy')
-y_train = np.load('data/y_train.npy')
-X_test  = np.load('data/X_test.npy')
-y_test  = np.load('data/y_test.npy') 
-
-# Dataset
-train_x = torch.Tensor(X_train) # transform to torch tensor
-train_y = torch.Tensor(y_train)
-
-test_x = torch.Tensor(X_test)
-test_y = torch.Tensor(y_test)
-
-train_dataset = TensorDataset(train_x, train_y) # create your datset
-test_dataset = TensorDataset(test_x, test_y)
-
-
-train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
-
 
 # GNN model
 if model_name == "acgn":
@@ -95,6 +75,26 @@ elif model_name == "msg3d":
 else:
     print("no such model ...")
     exit(1)
+
+# Load Data
+X_train = np.load('data/X_train.npy')
+y_train = np.load('data/y_train.npy')
+X_test  = np.load('data/X_test.npy')
+y_test  = np.load('data/y_test.npy') 
+
+# Dataset
+train_x = torch.Tensor(X_train) # transform to torch tensor
+train_y = torch.Tensor(y_train)
+
+test_x = torch.Tensor(X_test)
+test_y = torch.Tensor(y_test)
+
+train_dataset = TensorDataset(train_x, train_y) # create your datset
+test_dataset = TensorDataset(test_x, test_y)
+
+
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
 
 #x = torch.from_numpy(X_train[0]).float()
